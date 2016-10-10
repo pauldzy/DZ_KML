@@ -8,7 +8,7 @@ AS
    header: DZ_KML
      
    - Build ID: DZBUILDIDDZ
-   - TFS Change Set: DZTFSCHANGESETDZ
+   - TFS Change Set: DZCHANGESETDZ
    
    Utility for the exchange of geometries between Oracle Spatial and OGC
    Keyhole Markup Language.  Originally written for 10g to produce KML from SDO
