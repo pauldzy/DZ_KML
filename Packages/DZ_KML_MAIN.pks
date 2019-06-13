@@ -7,8 +7,8 @@ AS
    /*
    header: DZ_KML
      
-   - Build ID: DZBUILDIDDZ
-   - Change Set: DZCHANGESETDZ
+   - Release: %GITRELEASE%
+   - Commit Date: %GITCOMMITDATE%
    
    Utility for the exchange of geometries between Oracle Spatial and OGC
    Keyhole Markup Language.  Originally written for 10g to produce KML from SDO

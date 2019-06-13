@@ -1,15 +1,9 @@
-
---*************************--
-PROMPT sqlplus_header.sql;
-
 WHENEVER SQLERROR EXIT -99;
 WHENEVER OSERROR  EXIT -98;
 SET DEFINE OFF;
 
-
-
---*************************--
-PROMPT DZ_KML_UTIL.pks;
+--******************************--
+PROMPT Packages/DZ_KML_UTIL.pks 
 
 CREATE OR REPLACE PACKAGE dz_kml_util
 AUTHID CURRENT_USER
@@ -129,9 +123,8 @@ END dz_kml_util;
 
 GRANT EXECUTE ON dz_kml_util TO public;
 
-
---*************************--
-PROMPT DZ_KML_UTIL.pkb;
+--******************************--
+PROMPT Packages/DZ_KML_UTIL.pkb 
 
 CREATE OR REPLACE PACKAGE BODY dz_kml_util
 AS
@@ -928,9 +921,8 @@ AS
 END dz_kml_util;
 /
 
-
---*************************--
-PROMPT DZ_KML_DATA.tps;
+--******************************--
+PROMPT Types/DZ_KML_DATA.tps 
 
 CREATE OR REPLACE TYPE dz_kml_data FORCE
 AUTHID CURRENT_USER
@@ -978,9 +970,8 @@ AS OBJECT (
 
 GRANT EXECUTE ON dz_kml_data TO PUBLIC;
 
-
---*************************--
-PROMPT DZ_KML_DATA.tpb;
+--******************************--
+PROMPT Types/DZ_KML_DATA.tpb 
 
 CREATE OR REPLACE TYPE BODY dz_kml_data 
 AS
@@ -1122,9 +1113,8 @@ AS
 END;
 /
 
-
---*************************--
-PROMPT DZ_KML_DATA_LIST.tps;
+--******************************--
+PROMPT Collections/DZ_KML_DATA_LIST.tps 
 
 CREATE OR REPLACE TYPE dz_kml_data_list FORCE
 AS 
@@ -1133,9 +1123,8 @@ TABLE OF dz_kml_data;
 
 GRANT EXECUTE ON dz_kml_data_list TO PUBLIC;
 
-
---*************************--
-PROMPT DZ_KML_FOLDER.tps;
+--******************************--
+PROMPT Types/DZ_KML_FOLDER.tps 
 
 CREATE OR REPLACE TYPE dz_kml_folder FORCE
 AUTHID CURRENT_USER
@@ -1173,9 +1162,8 @@ AS OBJECT (
 
 GRANT EXECUTE ON dz_kml_folder TO PUBLIC;
 
-
---*************************--
-PROMPT DZ_KML_FOLDER.tpb;
+--******************************--
+PROMPT Types/DZ_KML_FOLDER.tpb 
 
 CREATE OR REPLACE TYPE BODY dz_kml_folder 
 AS
@@ -1365,9 +1353,8 @@ AS
 END;
 /
 
-
---*************************--
-PROMPT DZ_KML_MAIN.pks;
+--******************************--
+PROMPT Packages/DZ_KML_MAIN.pks 
 
 CREATE OR REPLACE PACKAGE dz_kml_main
 AUTHID CURRENT_USER
@@ -1378,8 +1365,8 @@ AS
    /*
    header: DZ_KML
      
-   - Build ID: 4
-   - TFS Change Set: 8320
+   - Release: 
+   - Commit Date: Mon Oct 10 16:40:45 2016 -0400
    
    Utility for the exchange of geometries between Oracle Spatial and OGC
    Keyhole Markup Language.  Originally written for 10g to produce KML from SDO
@@ -1641,9 +1628,8 @@ END dz_kml_main;
 
 GRANT EXECUTE ON dz_kml_main TO public;
 
-
---*************************--
-PROMPT DZ_KML_MAIN.pkb;
+--******************************--
+PROMPT Packages/DZ_KML_MAIN.pkb 
 
 CREATE OR REPLACE PACKAGE BODY dz_kml_main
 AS
@@ -3397,18 +3383,17 @@ AS
 END dz_kml_main;
 /
 
-
---*************************--
-PROMPT DZ_KML_TEST.pks;
+--******************************--
+PROMPT Packages/DZ_KML_TEST.pks 
 
 CREATE OR REPLACE PACKAGE dz_kml_test
 AUTHID DEFINER
 AS
 
-   C_TFS_CHANGESET CONSTANT NUMBER := 8320;
-   C_JENKINS_JOBNM CONSTANT VARCHAR2(255 Char) := 'NULL';
-   C_JENKINS_BUILD CONSTANT NUMBER := 4;
-   C_JENKINS_BLDID CONSTANT VARCHAR2(255 Char) := 'NULL';
+   C_GITRELEASE    CONSTANT VARCHAR2(255 Char) := '';
+   C_GITCOMMIT     CONSTANT VARCHAR2(255 Char) := 'ffa3e3849991b1ac5792b3ceb757b230c85f848f';
+   C_GITCOMMITDATE CONSTANT VARCHAR2(255 Char) := 'Mon Oct 10 16:40:45 2016 -0400';
+   C_GITCOMMITAUTH CONSTANT VARCHAR2(255 Char) := 'Paul Dziemiela';
    
    C_PREREQUISITES CONSTANT MDSYS.SDO_STRING2_ARRAY := MDSYS.SDO_STRING2_ARRAY(
    );
@@ -3438,9 +3423,8 @@ END dz_kml_test;
 
 GRANT EXECUTE ON dz_kml_test TO public;
 
-
---*************************--
-PROMPT DZ_KML_TEST.pkb;
+--******************************--
+PROMPT Packages/DZ_KML_TEST.pkb 
 
 CREATE OR REPLACE PACKAGE BODY dz_kml_test
 AS
@@ -3483,10 +3467,12 @@ AS
    RETURN VARCHAR2
    AS
    BEGIN
-      RETURN '{"TFS":' || C_TFS_CHANGESET || ','
-      || '"JOBN":"' || C_JENKINS_JOBNM || '",'   
-      || '"BUILD":' || C_JENKINS_BUILD || ','
-      || '"BUILDID":"' || C_JENKINS_BLDID || '"}';
+      RETURN '{'
+      || ' "GITRELEASE":"'    || C_GITRELEASE    || '"'
+      || ',"GITCOMMIT":"'     || C_GITCOMMIT     || '"'
+      || ',"GITCOMMITDATE":"' || C_GITCOMMITDATE || '"'
+      || ',"GITCOMMITAUTH":"' || C_GITCOMMITAUTH || '"'
+      || '}';
       
    END version;
    
@@ -3512,11 +3498,6 @@ AS
 
 END dz_kml_test;
 /
-
-
---*************************--
-PROMPT sqlplus_footer.sql;
-
 
 SHOW ERROR;
 
@@ -3551,4 +3532,5 @@ END;
 /
 
 EXIT;
+SET DEFINE OFF;
 
